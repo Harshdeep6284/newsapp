@@ -8,7 +8,6 @@ const Navbar = ({ setCategory, currentCategory }) => {
     "Home",
     "Business",
     "Entertainment",
-    "General",
     "Health",
     "Science",
     "Sports",
