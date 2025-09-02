@@ -1,6 +1,9 @@
-import React from "react";
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
+import React, { useState } from "react";
 
 const Navbar = ({ setCategory, currentCategory }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const categories = [
     "Home",
     "Business",
@@ -13,43 +16,70 @@ const Navbar = ({ setCategory, currentCategory }) => {
   ];
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container-fluid">
-        {/* Brand Name */}
-        <a className="navbar-brand" href="#">
-          News
-        </a>
+    <nav className="bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Brand */}
+          <div className="flex-shrink-0 text-xl font-bold cursor-pointer">
+            News
+          </div>
 
-        {/* Mobile Toggle */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
+          {/* Mobile Toggle */}
+          <div className="flex md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white focus:outline-none"
+            >
+              ☰
+            </button>
+          </div>
 
-        {/* Navbar Links */}
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            {categories.map((cat) => (
-  <li className="nav-item" key={cat}>
-    <button
-      className="nav-link btn btn-link text-white"
-      onClick={() => setCategory(cat.toLowerCase())}
-    >
-      {cat}
-                  </button>
-                </li>
-              
-            ))}
-          </ul>
+          {/* Links */}
+          <div className="hidden md:flex space-x-4">
+            {categories.map((cat) => {
+              const lowerCat = cat.toLowerCase();
+              return (
+                <button
+                  key={cat}
+                  className={`px-3 py-2 rounded-md text-sm font-medium ${
+                    currentCategory === lowerCat
+                      ? "bg-gray-700"
+                      : "hover:bg-gray-800"
+                  }`}
+                  onClick={() => setCategory((lowerCat==="home")?"general":lowerCat)}
+                >
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden px-2 pb-3 space-y-1">
+          {categories.map((cat) => {
+            const lowerCat = cat.toLowerCase();
+            return (
+              <button
+                key={cat}
+                className={`block w-full text-left px-3 py-2 rounded-md text-sm font-medium ${
+                  currentCategory === lowerCat
+                    ? "bg-gray-700"
+                    : "hover:bg-gray-800"
+                }`}
+                onClick={() => {
+                  setCategory(lowerCat);
+                  setIsOpen(false);
+                }}
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </div>
+      )}
     </nav>
   );
 };
